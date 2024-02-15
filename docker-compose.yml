@@ -4,7 +4,7 @@ services:
   node_app:
     build:
       context: ./
-      target: dev
+      target: production
     container_name: node_app
     restart: always
     working_dir: /app
@@ -16,6 +16,9 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       DEBUG: nodejs-docker-express:*
+    networks:
+      - outside
+      - internal
 
     depends_on:
       - mariadb
@@ -33,6 +36,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./mariadb_data:/var/lib/mysql
+    networks:
+      - internal
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -43,6 +48,12 @@ services:
     environment:
       PMA_HOST: mariadb
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - internal
 
 volumes:
   mariadb_data:
+networks:
+  nginxproxy_default:
+    external: true
+  internal:
