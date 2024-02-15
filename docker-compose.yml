@@ -2,16 +2,21 @@ version: '3.8'
 
 services:
   node_app:
-    image: node:18
+    build:
+      context: ./
+      target: dev
     container_name: node_app
     restart: always
     working_dir: /app
     volumes:
-      - .:/app
+      - .:/src
+    command: npm run start
     ports:
       - "8000:8000"
     environment:
       NODE_ENV: ${NODE_ENV}
+      DEBUG: nodejs-docker-express:*
+
     depends_on:
       - mariadb
 
@@ -19,6 +24,8 @@ services:
     image: mariadb
     container_name: mariadb
     restart: always
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -32,7 +39,7 @@ services:
     container_name: phpmyadmin
     restart: always
     ports:
-      - "8080:80"
+      - "8082:80"
     environment:
       PMA_HOST: mariadb
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
