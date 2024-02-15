@@ -34,7 +34,7 @@ app.use('/api/insurance', insuranceRoute);
 app.use('/api/personalInvoice', personalInvoiceRoute);
 
 //Server configuration
-const port = 8080;
+const port = 8000;
 app.listen(process.env.PORT || port, ()=>{
     try {
         console.log(`Server running on port ${port}`);
