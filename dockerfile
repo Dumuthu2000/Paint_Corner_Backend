@@ -5,7 +5,7 @@ RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl 
 
 WORKDIR /src
 COPY package*.json /
-EXPOSE 3000
+EXPOSE 3002
 
 FROM base as production
 ENV NODE_ENV=production
