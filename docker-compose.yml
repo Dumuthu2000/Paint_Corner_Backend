@@ -12,7 +12,7 @@ services:
       - .:/src
     command: npm run start
     ports:
-      - "3002:3002"
+      - "127.0.0.1:3002:3002"
     environment:
       NODE_ENV: ${NODE_ENV}
       DEBUG: nodejs-docker-express:*
@@ -28,7 +28,7 @@ services:
     container_name: mariadb
     restart: always
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
