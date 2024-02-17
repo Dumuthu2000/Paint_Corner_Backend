@@ -3,7 +3,7 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// const authToken = require('../middleware/AuthToken');
+const authToken = require('../middleware/AuthToken');
 
 
 //Signup
