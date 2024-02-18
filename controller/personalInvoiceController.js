@@ -55,24 +55,6 @@ exports.getPersonalInvoice = async(req, res)=>{
    }
 }
 
-// //Update items
-// exports.updatePersonalInvoice = async(req, res) =>{
-//     try {
-//        const invoiceID = req.params.invoiceID;
-//        const {insurancePrice} = req.body
-//        const sql = "UPDATE non-insurance-invoice SET insurancePrice = ? WHERE invoiceID = ?";
-//        const [result] = await dbConnection.execute(sql, [insurancePrice, invoiceID]);
-//        if(!result){
-//           res.status(404).json({error:"Data fetching error"});
-//        }else{
-//           res.status(200).json("Updation Successfull");
-//        }
-//     } catch (error) {
-//        console.error(error.message);
-//        res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//  }
-// //Get Insurance price total
 exports.getTotalItemPrice = async(req, res)=>{
     try {
        const jobID = req.params.jobID;
@@ -105,3 +87,27 @@ exports.deletePersonalInvoice = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+
+  //Search Job for report
+exports.searchJobCardForPersonalPreview = async (req,res)=>{
+  try {
+    const jobID = req.params.jobID;
+       const sql = `SELECT * FROM job WHERE jobID = ?`;
+       const [result] = await dbConnection.execute(sql, [jobID]);
+       if (result.length > 0) {
+        const fetchFromEstimateSql = "SELECT jobID FROM `non-insurance-invoice`";
+        const [result1] = await dbConnection.execute(fetchFromEstimateSql);
+
+        const isExist = result1.some(personal => personal.jobID === result[0].jobID);
+        if(!isExist){
+          res.status(500).json({ error: 'Not Personal Invoice From This Job Number' });
+
+        }else{
+          res.status(200).json(result);
+        }
+      }
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
