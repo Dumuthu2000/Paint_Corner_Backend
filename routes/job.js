@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const jobController = require('../controller/jobController');
-const authToken = require('../middleware/AuthToken');
+//Search job card details
+router.get('/getJobDetails/:jobID', jobController.getJobDetails);
 
 //Search job 
 router.get('/searchJob/:jobID', jobController.searchJob);
