@@ -5,6 +5,8 @@ const personalController = require('../controller/personalInvoiceController')
 //Fetch vehicles
 router.post('/createPersonalInvoice', personalController.createPersonalInvoice);
 
+//Search job
+router.get('/searchJobForPersonalPreview/:jobID', personalController.searchJobCardForPersonalPreview);
 //Add vehicle
 router.get('/getPersonalInvoice/:jobID', personalController.getPersonalInvoice);
 
