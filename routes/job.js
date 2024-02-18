@@ -7,7 +7,7 @@ const authToken = require('../middleware/AuthToken');
 router.get('/searchJob/:jobID', jobController.searchJob);
 
 //New job 
-router.post('/createJob',authToken, jobController.newJob);
+router.post('/createJob', jobController.newJob);
 
 //Fetching Insurance
 router.get('/insurance', jobController.insurance);
