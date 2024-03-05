@@ -47,7 +47,8 @@ exports.signin = async (req, res) => {
 
         const generateJwt=()=>{
             const payLoad={role: result[0].role}
-            const secretKey = process.env.SECRET_KEY;
+            // const secretKey = process.env.SECRET_KEY;
+            const secretKey = "asdasdad-asdasdad-advsfsf";
             const options={expiresIn:"1hr"}
             
             //Create the token using sign in method

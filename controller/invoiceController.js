@@ -90,3 +90,38 @@ exports.getTotalInsurancePrice = async(req, res)=>{
        res.status(500).json({ error: 'Internal Server Error' });
    }
  }
+
+ //Add new items to the invoice
+ exports.addNewItemsToInvoice= async(req, res)=>{
+  try {
+    const {tableCategory, itemName, itemValue, insurancePrice, jobID} = req.body;
+    const sql = "INSERT INTO invoice (tableCategory, itemName, itemValue, insurancePrice, jobID) VALUES (?, ?, ?, ?, ?)";
+    const values = [tableCategory, itemName, itemValue, insurancePrice, jobID]
+    const [result] = await dbConnection.execute(sql, values);
+
+    if(result.affectedRows > 0){
+      res.status(200).json({ success: true, Message: "Added new item successfully" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+ }
+
+ //Delete item from invoice
+ exports.deleteItemFromInvoice=async(req, res)=>{
+  try {
+    const invoiceID = req.params.invoiceID;
+    const sql = "DELETE FROM invoice WHERE invoiceID = ?";
+    const [result] = await dbConnection.execute(sql,[invoiceID]);
+
+    if(result.affectedRows > 0){
+      res.status(200).json("Deletion Successfull")
+    }else{
+      res.status(500).json("Deletion Failed")
+    }
+
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+ }
