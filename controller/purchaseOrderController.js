@@ -39,7 +39,7 @@ exports.createPurchaseOrder = async (req, res) => {
 exports.getPurchaseOrder = async (req, res) => {
     try {
         // Step 1: Fetch the latest purchase order
-        const sql = "SELECT * FROM purchaseorder WHERE poID = (SELECT MAX(poID) FROM purchaseOrder)";
+        const sql = "SELECT * FROM purchaseorder WHERE poID = (SELECT MAX(poID) FROM purchaseorder)";
         const [purchaseOrderResult] = await dbConnection.execute(sql);
 
         if (purchaseOrderResult.length === 0) {
@@ -50,7 +50,7 @@ exports.getPurchaseOrder = async (req, res) => {
         const orderID = latestPurchaseOrder.poID;
 
         // Step 2: Fetch purchase items associated with the latest purchase order
-        const sql2 = `SELECT * FROM purchaseItem WHERE order_id = ?`;
+        const sql2 = `SELECT * FROM purchaseitem WHERE order_id = ?`;
         const [purchaseItemResult] = await dbConnection.execute(sql2, [orderID]);
 
         // Prepare response with both purchase order and its items
@@ -81,7 +81,7 @@ exports.getPurchaseOrderById = async (req, res) => {
         const orderID = latestPurchaseOrder.poID;
 
         // Step 2: Fetch purchase items associated with the latest purchase order
-        const sql2 = `SELECT * FROM purchaseItem WHERE order_id = ?`;
+        const sql2 = `SELECT * FROM purchaseitem WHERE order_id = ?`;
         const [purchaseItemResult] = await dbConnection.execute(sql2, [orderID]);
 
         // Prepare response with both purchase order and its items
@@ -174,7 +174,7 @@ exports.deleteItemFromPurchaseOrder = async (req, res) => {
             return res.status(400).json({ error: "Both order_id and item_id are required" });
         }
 
-        const sql = "DELETE FROM purchaseItem WHERE order_id = ? AND item_id = ?";
+        const sql = "DELETE FROM purchaseitem WHERE order_id = ? AND item_id = ?";
         const [result] = await dbConnection.execute(sql, [order_id, item_id]);
 
         if (result && result.affectedRows > 0) {
