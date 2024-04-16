@@ -3,7 +3,7 @@ const dbConnection = require('../middleware/connection');
 //Select Items
 exports.getItems = async (req, res)=>{
     try {
-        const sql = "SELECT itemName FROM items";
+        const sql = "SELECT itemID, itemName FROM items";
         const [result] = await dbConnection.execute(sql);
         if(!result){
             res.status(404).json({error:"Data fetching error"});

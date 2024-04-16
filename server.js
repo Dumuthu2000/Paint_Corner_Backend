@@ -19,6 +19,9 @@ const vehicleRoute = require('./routes/vehicles');
 const productsRoute = require('./routes/products');
 const insuranceRoute = require('./routes/insurance');
 const personalInvoiceRoute = require('./routes/personalInvoice');
+const purchaseOrderRoute = require('./routes/purchaseOrder')
+const purchaseCompanyRoute = require('./routes/purchaseCompany')
+const quotationRoute = require('./routes/quotation')
 
 
 app.use('/api/user', authRoute);
@@ -32,6 +35,9 @@ app.use('/api/vehicles', vehicleRoute);
 app.use('/api/parts', productsRoute);
 app.use('/api/insurance', insuranceRoute);
 app.use('/api/personalInvoice', personalInvoiceRoute);
+app.use('/api/purchaseOrder', purchaseOrderRoute);
+app.use('/api/purchaseCompany', purchaseCompanyRoute);
+app.use('/api/quotation', quotationRoute);
 
 //Server configuration
 const port = 3002;
