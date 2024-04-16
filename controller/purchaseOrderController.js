@@ -39,7 +39,7 @@ exports.createPurchaseOrder = async (req, res) => {
 exports.getPurchaseOrder = async (req, res) => {
     try {
         // Step 1: Fetch the latest purchase order
-        const sql = "SELECT * FROM purchaseOrder WHERE poID = (SELECT MAX(poID) FROM purchaseOrder)";
+        const sql = "SELECT * FROM purchaseorder WHERE poID = (SELECT MAX(poID) FROM purchaseOrder)";
         const [purchaseOrderResult] = await dbConnection.execute(sql);
 
         if (purchaseOrderResult.length === 0) {
@@ -70,7 +70,7 @@ exports.getPurchaseOrder = async (req, res) => {
 exports.getPurchaseOrderById = async (req, res) => {
     try {
         const {poID} = req.params
-        const sql = "SELECT * FROM purchaseOrder WHERE poID = ?";
+        const sql = "SELECT * FROM purchaseorder WHERE poID = ?";
         const [purchaseOrderResult] = await dbConnection.execute(sql, [poID]);
 
         if (purchaseOrderResult.length === 0) {
@@ -101,7 +101,7 @@ exports.getPurchaseOrderById = async (req, res) => {
 //Getting all purchase orders
 exports.allPurchaseOrders=async(req, res)=>{
     try {
-        const sql = "SELECT * FROM purchaseOrder"
+        const sql = "SELECT * FROM purchaseorder"
         const [result] =  await dbConnection.execute(sql);
         if(result.length == 0){
             res.status(401).json({Error: "Purchase orders are not available"})
@@ -118,7 +118,7 @@ exports.updatePurchaseOrder = async (req, res) => {
         const { poID } = req.params;
 
         // Update purchaseOrder table
-        const updateOrderSql = "UPDATE purchaseOrder SET vehicleNo=?, vehicleMake=?, vehicleModel=?, companyName=?, issuedDate=? WHERE poID=?";
+        const updateOrderSql = "UPDATE purchaseorder SET vehicleNo=?, vehicleMake=?, vehicleModel=?, companyName=?, issuedDate=? WHERE poID=?";
         const updateOrderParams = [vehicleNo, vehicleMake, vehicleModel, companyName, issuedDate, poID];
         const [updateOrderResult] = await dbConnection.execute(updateOrderSql, updateOrderParams);
 
