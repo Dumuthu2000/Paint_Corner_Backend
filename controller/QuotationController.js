@@ -184,3 +184,45 @@ exports.deleteItemFromQuotation = async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+//Get quotation items from job Number from estimate and supplimentry tables
+exports.getItemsFromEstimate = async (req, res) => {
+    try {
+        const { tableCategory, jobID } = req.body;
+
+        if (!jobID) {
+            return res.status(400).json({ error: "Both jobID and tableCategory are required" });
+        }
+
+        // Query the 'estimate' table
+        const estimateSql = "SELECT i.itemID, i.itemName FROM items i JOIN estimate e ON i.itemName = e.itemName WHERE e.tableCategory = ? AND e.jobID = ?";
+        const [estimateResult] = await dbConnection.execute(estimateSql, [tableCategory, jobID]);
+
+        if (!estimateResult || estimateResult.length === 0) {
+            return res.status(404).json({ error: 'No items found in estimate for this jobID' });
+        }
+
+        // Query the 'supplimentry' table
+        const supplimentrySql = `SELECT items.itemID, TRIM(SUBSTRING_INDEX(supplimentry.itemName, '(Supplimentry', 1)) AS itemName
+        FROM items, supplimentry
+        WHERE items.itemName = TRIM(SUBSTRING_INDEX(supplimentry.itemName, '(Supplimentry', 1))
+          AND supplimentry.tableCategory = ?
+          AND supplimentry.jobID = ?`
+        const [supplimentryResult] = await dbConnection.execute(supplimentrySql, [tableCategory, jobID]);
+        console.log(estimateResult)
+        console.log(supplimentryResult)
+
+        // Prepare response data
+        const responseData = {
+            estimateItems: estimateResult,
+            supplimentryItems: supplimentryResult
+        };
+
+        // Send the combined response
+        res.status(200).json(responseData);
+    } catch (error) {
+        console.error("Error retrieving items:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+

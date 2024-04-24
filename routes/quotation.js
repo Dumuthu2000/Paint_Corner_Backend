@@ -19,4 +19,7 @@ router.put('/updatequotation/:quotationID', quotationController.updateQuotation)
 
 //Fetch all purchase orders
 router.delete('/deleteQuotation/:quotationID', quotationController.deleteItemFromQuotation);
+
+//Fetch items from estimate
+router.post('/getItems', quotationController.getItemsFromEstimate);
 module.exports = router;
